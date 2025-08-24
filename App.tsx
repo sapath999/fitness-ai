@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import { AuthProvider } from './src/contexts/AuthContext';
+import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -12,10 +12,11 @@ import InspirationVideo from './components/InspirationVideo';
 import SignInPage from './components/SignInPage';
 import "./index.css"
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const [page, setPage] = useState<'home' | 'analysis' | 'signin' | 'ai-results'>('home');
   const [analysisResult, setAnalysisResult] = useState<string>('');
   const mainRef = useRef<HTMLDivElement>(null);
+  const { login } = useAuth();
 
   const goToAnalysis = () => setPage('analysis');
   const goToHome = () => setPage('home');
@@ -25,30 +26,6 @@ const App: React.FC = () => {
     setPage('ai-results');
   };
 
-  // Parallax effect for background
-  useEffect(() => {
-    const handleScroll = () => {
-      if (mainRef.current) {
-        // Apply parallax effect by changing background position
-        mainRef.current.style.backgroundPositionY = `${window.scrollY * 0.5}px`;
-      }
-    };
-
-    if (page === 'home') {
-      window.addEventListener('scroll', handleScroll);
-    } else {
-      // Reset background position when switching to a non-scrolling page
-      if (mainRef.current) {
-        mainRef.current.style.backgroundPositionY = '0px';
-      }
-      window.removeEventListener('scroll', handleScroll);
-    }
-
-    // Cleanup listener on component unmount or page change
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [page]);
 
 
   return (
@@ -94,10 +71,20 @@ const App: React.FC = () => {
           )}
           {page === 'analysis' && <AnalysisPage onBack={goToHome} onAnalysisComplete={goToAIResults} />}
           {page === 'ai-results' && <AIResultsPage analysisResult={analysisResult} onBack={goToHome} onAnalyzeAnother={goToAnalysis} />}
-          {page === 'signin' && <SignInPage onBack={goToHome} />}
+          {page === 'signin' && <SignInPage onBack={goToHome} onLogin={login} />}
         </main>
       </div>
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <GoogleOAuthProvider clientId={process.env.VITE_GOOGLE_CLIENT_ID || ''}>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 };
 

@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ onGetStarted, onSignIn }) => {
       <div className="container mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <a href="/" className="flex items-center space-x-2">
-            <img src="/logo.png" alt="" className="w-12 rotate-[-25.5deg] opacity-50" />
+            <img src="/logo.png" alt="Fitness AI Logo" className="w-12 rotate-[-25.5deg] opacity-70" />
             <span className="text-4xl font-bold tracking-tight text-blue-300 opacity-80">
               Fitness AI
             </span>
@@ -57,7 +57,27 @@ const Header: React.FC<HeaderProps> = ({ onGetStarted, onSignIn }) => {
             Sign In
           </a>
         </nav>
-       
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-slate-200 hover:text-cyan-400 focus:outline-none"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+              />
+            </svg>
+          </button>
+        </div>
       </div>
       {/* Mobile Menu */}
       <div
@@ -65,7 +85,14 @@ const Header: React.FC<HeaderProps> = ({ onGetStarted, onSignIn }) => {
           isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
       >
-        <div className="flex flex-col items-center justify-center h-screen space-y-8">
+        <div className="container mx-auto flex justify-end p-4">
+            <button onClick={() => setIsMenuOpen(false)} className="text-slate-200 hover:text-cyan-400">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+        </div>
+        <div className="flex flex-col items-center justify-center h-full -mt-12 space-y-8">
           <a
             href="#features"
             onClick={() => setIsMenuOpen(false)}
