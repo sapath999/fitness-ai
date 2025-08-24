@@ -1,0 +1,7 @@
+{
+  "name": "Fitness AI",
+  "description": "A revolutionary AI-powered fitness and nutrition coach that creates hyper-personalized plans based on your unique DNA report. Unlock your genetic potential for optimal health.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
